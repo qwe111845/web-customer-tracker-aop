@@ -12,6 +12,7 @@ import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.stereotype.Component;
 
 
+
 @Aspect
 @Component
 public class CRMLoggingAspect {
@@ -45,25 +46,28 @@ public class CRMLoggingAspect {
 	@Before("forAppFlow()")
 	public void beforeAppFlow(JoinPoint theJoinPoint) {
 		
-		myLogger.info("\n=====>>> Executing @Before advice on method");
-		
 		// display the method signature
 		MethodSignature methodSig = (MethodSignature) theJoinPoint.getSignature();
+		myLogger.info("======>>> Executing @Before advice on method: " + methodSig + "\n");
 		
-		myLogger.info("Method: " + methodSig);
+		Object[] args = theJoinPoint.getArgs();
+		
+		for (Object tempArg: args) {
+			myLogger.info("=======> argument: " + tempArg);
+		}
 				
 		
 	}
 	// add @AfterReturning advice
 	// add a new advice for @AfterReturning on the findAccounts method
-	/*
+	
 	@AfterReturning(
-			pointcut="execution(* com.lin.aopdemo.dao.AccountDAO.findAccounts(..))", 
+			pointcut="forAppFlow()", 
 			returning="result")
-	public void afterFindAccountsAdvice(JoinPoint theJoinPoint) {
+	public void afterAppFlowAdvice(JoinPoint theJoinPoint) {
 		
 		String method = theJoinPoint.getSignature().toShortString();
-		myLogger.info("\n========> Excuting @AfterReturning on method: " + method);
+		myLogger.info("========> Excuting @AfterReturning on method: " + method + "\n");
 		
-	} */
+	} 
 }
